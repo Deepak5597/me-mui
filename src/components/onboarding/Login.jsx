@@ -4,7 +4,7 @@ import sha256 from 'sha256';
 import db from '../../firebase';
 import { collection, query, where, getDocs } from "firebase/firestore/lite";
 
-import { Avatar, Box, Button, Container, TextField, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Container, TextField, Typography } from "@mui/material";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 import useAuth from '../../hooks/useAuth';
@@ -86,9 +86,7 @@ function Login() {
                 </Typography>
                 <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
                     {(!loginData.isSuccess && loginData?.message) &&
-                        <Typography variant="h6" component="h6" mb={2} sx={{ p: 2, bgcolor: 'error.main', color: 'error.contrastText', fontSize: "medium", borderRadius: 1, fontWeight: 'normal' }}>
-                            {loginData.message}
-                        </Typography>
+                        <Alert severity="error">{loginData.message}</Alert>
                     }
                     <TextField
                         margin="normal"

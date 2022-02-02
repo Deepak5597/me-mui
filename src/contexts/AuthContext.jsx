@@ -9,7 +9,10 @@ export const AuthContextProvider = ({ children }) => {
         return localData ? JSON.parse(localData) : {};
     });
 
-    let [isLoggedIn, setIsLoggedIn] = useState(false);
+    let [isLoggedIn, setIsLoggedIn] = useState(() => {
+        const localData = localStorage.getItem("isLoggedIn");
+        return localData ? Boolean(localData) : {};
+    });
 
     const logout = () => {
         setUser({});

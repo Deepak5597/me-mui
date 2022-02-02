@@ -14,7 +14,6 @@ import Avatar from '@mui/material/Avatar';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
-import PersonIcon from '@mui/icons-material/Person';
 
 import ProfilePic from '../../images/pp.png';
 import useAuth from '../../hooks/useAuth';
@@ -86,12 +85,7 @@ export default function Header({ position, open, handleDrawerOpen }) {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                <MenuItem onClick={handleCloseUserMenu}>
-                                    <ListItemIcon>
-                                        <PersonIcon fontSize="small" />
-                                    </ListItemIcon>
-                                    <ListItemText>Profile</ListItemText>
-                                </MenuItem>
+
                                 <MenuItem onClick={() => { handleCloseUserMenu(); logout() }}>
                                     <ListItemIcon>
                                         <LogoutIcon fontSize="small" />
