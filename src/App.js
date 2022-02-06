@@ -11,8 +11,8 @@ const NotFound = React.lazy(() => import('./components/error/NotFound'));
 const UnAuthorized = React.lazy(() => import('./components/error/UnAuthorized'));
 const Login = React.lazy(() => import('./components/onboarding/Login'));
 const Dashboard = React.lazy(() => import('./components/dashboard/Dashboard'));
-const Parties = React.lazy(() => import('./components/parties/Parties'));
-const Items = React.lazy(() => import('./components/items/Items'));
+const PartyLayout = React.lazy(() => import('./components/parties/PartyLayout'));
+const ItemLayout = React.lazy(() => import('./components/items/ItemLayout'));
 const Sales = React.lazy(() => import('./components/sales/Sales'));
 
 function App() {
@@ -25,14 +25,14 @@ function App() {
               <Route path="/login" element={<Suspense fallback={<Loading />}><Login /></Suspense>} />
               <Route path="/unauthorise" element={<Suspense fallback={<Loading />}><UnAuthorized /></Suspense>} />
 
-              <Route element={<Suspense fallback={<Loading />}><Layout /></Suspense>}>
+              <Route element={<Layout />}>
 
                 {/* Protected Routes */}
-                <Route element={<ProtectedRoute allowedRoles={["admin", "sales"]} />}>
+                <Route element={<Suspense fallback={<Loading />}><ProtectedRoute allowedRoles={["admin", "sales"]} /></Suspense>}>
                   <Route path="/" exact element={<Redirect pathname="/dashboard" />} />
                   <Route path="/dashboard" exact element={<Dashboard />} />
-                  <Route path="/parties" exact element={<Parties />} />
-                  <Route path="/items" exact element={<Items />} />
+                  <Route path="/parties" exact element={<PartyLayout />} />
+                  <Route path="/items" exact element={<ItemLayout />} />
                   <Route path="/sales" exact element={<Sales />} />
                 </Route>
               </Route>

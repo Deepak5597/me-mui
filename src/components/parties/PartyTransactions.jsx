@@ -1,78 +1,46 @@
-import { Button } from '@mui/material';
-import { Box } from '@mui/system';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const transaction = {
-    "party": {
-        "partyId": 1,
-        "partyName": "Deepak Bisht",
-        "billingLocation": {
-            "billingName": "Deepak's House",
-            "billingAddress": "Golna Karadiya Almora",
-            "billingContactNumber": "+919675697987",
-            "billingType": "retail"
-        }
-    },
-    "items": [
-        {
-            "shortName": "",
-            "longName": "",
-            "company": "",
-            "stock": {
-                "stockName": "stock-old",
-                "priceCategory": "single",
-                "quantity": "1",
-                "price": "5"
-            },
-            "quantity": "150",
-            "subToal": "(150/1)*5 : [(quantity/stock.quantity)*stock.price]",
-            "tax": "pick from item",
-            "discount": "",
-            "total": "(subTotal + tax) - discount"
-        }
-    ],
-    "price": {
-        "subTotal": "1100 : complete subTotal of all items",
-        "tax": "100 : complete tax of all items",
-        "discount": "200 : : complete discount of all items",
-        "total": "1000 : : complete total of all items"
-    },
-    "payment": [
-        {
-            "type": "cash",
-            "amount": "100"
-        },
-        {
-            "type": "gpay",
-            "amount": "400"
-        }
-    ],
-    "status": "PARTIALLY_PAID",
-    "due": "-500",
-    "dueDate": "",
-    "creationDate": "",
-    "history": [
-        {
-            "type": "update"
-        }
-    ]
-};
-function PartyTransactions() {
+import { Button, Grid } from '@mui/material';
+import { Box } from '@mui/system';
+
+import PartyDataTable from './PartyDataTable';
+import transactionData from './transactionData';
+
+function PartyTransactions({ data }) {
+
     const [transactions, setTransactions] = useState([]);
-    const handleClick = () => {
-        const transactionsToAdd = [];
-        transactionsToAdd.push(transaction)
-        setTransactions(transactionsToAdd);
-        console.log(transactions)
+    const [isRemotelyFetched, setIsRemotelyFetched] = useState(false);
+
+    useEffect(() => {
+        if (data) {
+            let ts = [];
+            transactionData.forEach(item => {
+                if (item.party.partyId === data.id) {
+                    ts.push(item)
+                }
+            })
+            setTransactions(ts);
+        }
+    }, [data])
+
+    const refreshTransaction = () => {
+        !isRemotelyFetched && setIsRemotelyFetched(true)
     }
     return (
         <>
-            {
-                !transactions.length ? (<Button variant="contained" onClick={handleClick}> Fetch Transactions</Button>)
-                    : (
-                        <Box> {transactions.length} </Box>
-                    )
-            }
+            <Grid item xs={1.7} >
+                <Box variant="div" sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", height: "100%", pr: 2 }}>
+                    {isRemotelyFetched ? <Button variant="contained" onClick={refreshTransaction}> Refresh Transactions</Button>
+                        : <Button variant="contained" onClick={refreshTransaction}>Load Transactions</Button>
+                    }
+                </Box>
+            </Grid>
+            <Grid item xs>
+                {
+                    transactions &&
+                    <PartyDataTable data={transactions} />
+                }
+            </Grid>
         </>
     );
 }

@@ -12,7 +12,7 @@ import SidebarHeader from './SidebarHeader';
 import Sidebar from './Sidebar';
 
 export default function PersistentDrawerLeft() {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -42,7 +42,7 @@ export default function PersistentDrawerLeft() {
                 <SidebarHeader handleDrawerClose={handleDrawerClose} drawerHeader={DrawerHeader}></SidebarHeader>
                 <Sidebar />
             </Drawer>
-            <Main open={open}>
+            <Main open={open} sx={{ backgroundColor: "lightgray" }}>
                 <DrawerHeader />
                 <Outlet></Outlet>
             </Main>
