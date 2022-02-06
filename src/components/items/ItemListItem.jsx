@@ -15,7 +15,7 @@ const Item = styled(Paper)({
     width: "100%"
 })
 
-function PartyListItem({ data, changeSelectedParty, isActive }) {
+function ItemListItem({ data, changeSelectedItem, isActive }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -25,13 +25,13 @@ function PartyListItem({ data, changeSelectedParty, isActive }) {
         setAnchorEl(null);
     };
     const handleCardClick = () => {
-        changeSelectedParty(data);
+        changeSelectedItem(data);
     }
     return (
         <Item sx={[{ borderLeft: 5, borderRadius: 0, borderColor: "transparent" }, isActive && { borderColor: "primary.main", backgroundColor: "grey.200" }, { '&:hover': { backgroundColor: "grey.100" } }]}>
             <Box onClick={handleCardClick}>
-                <Typography variant="subtitle1">{data.name}</Typography>
-                <Typography variant="subtitle2" sx={{ color: "grey.700" }}>{data.billingLocation.reduce((previousValue, newValue) => previousValue + ' | ' + newValue.billingContactNumber, '').substring(2)}</Typography>
+                <Typography variant="subtitle1">{data.shortName}</Typography>
+                <Typography variant="subtitle2" sx={{ color: "grey.700" }}>{data.company} | {data.stock.reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.quantity), 0)}</Typography>
                 {/* <Typography variant="subtitle2" sx={{ color: "grey.700" }}>{data.partyType} | {data.currentBalance}</Typography> */}
             </Box>
             <IconButton aria-label="action" component="span" onClick={handleClick} aria-controls={open ? 'basic-menu' : undefined} aria-expanded={open ? 'true' : undefined}>
@@ -64,4 +64,4 @@ function PartyListItem({ data, changeSelectedParty, isActive }) {
     )
 }
 
-export default PartyListItem;
+export default ItemListItem;

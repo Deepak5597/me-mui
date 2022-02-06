@@ -2,9 +2,9 @@ import { styled } from '@mui/system';
 
 const ScrollableWrapper = styled('div')(({ bg }) => ({
     backgroundColor: bg ? bg : "white",
-    padding: 8,
+    paddingBottom: 8,
     borderRadius: 4,
-    height: "89vh",
+    height: "90vh",
     overflowY: "auto",
     width: "100%"
 

@@ -1,14 +1,20 @@
-import { createContext, useReducer } from "react";
-import partyReducer from '../reducers/partyReducer';
+import { createContext, useState } from "react";
 
 export const GlobalContext = createContext();
 
 export const GlobalContextProvider = ({ children }) => {
 
-    const [partyData, partyDispatcher] = useReducer(partyReducer, { data: [], isLoading: false, error: undefined });
+    let [parties, setParties] = useState(() => {
+        const localData = localStorage.getItem("parties");
+        return localData ? JSON.parse(localData) : {};
+    });
+
+    const refreshPartyData = () => {
+        console.log("party data Refereshed")
+    }
 
     return (
-        <GlobalContext.Provider value={{ partyData, partyDispatcher }}>
+        <GlobalContext.Provider value={{ parties, setParties, refreshPartyData }}>
             {children}
         </GlobalContext.Provider>
     )
