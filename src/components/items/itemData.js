@@ -15,14 +15,38 @@ const data = [
                     {
                         "priceCategory": "single",
                         "quantity": "1",
-                        "price": "1050"
+                        "retailPrice": "1050",
+                        "wholesalePrice": "1000"
                     },
                     {
                         "priceCategory": "box",
                         "quantity": "5",
-                        "price": "5000"
+                        "retailPrice": "5100",
+                        "wholesalePrice": "4900"
                     }
-                ]
+                ],
+                "isDefault": true,
+                "defaultDiscount": 100
+            },
+            {
+                "stockName": "stock-2022",
+                "quantity": "10",
+                "price": [
+                    {
+                        "priceCategory": "single",
+                        "quantity": "1",
+                        "retailPrice": "1000",
+                        "wholesalePrice": "900"
+                    },
+                    {
+                        "priceCategory": "box",
+                        "quantity": "5",
+                        "retailPrice": "4900",
+                        "wholesalePrice": "4300"
+                    }
+                ],
+                "isDefault": false,
+                "defaultDiscount": 0
             },
             {
                 "stockName": "stock-new",
@@ -31,14 +55,18 @@ const data = [
                     {
                         "priceCategory": "single",
                         "quantity": "1",
-                        "price": "1100"
+                        "retailPrice": "1000",
+                        "wholesalePrice": "950"
                     },
                     {
                         "priceCategory": "box",
                         "quantity": "5",
-                        "price": "5100"
+                        "retailPrice": "5100",
+                        "wholesalePrice": "4700"
                     }
-                ]
+                ],
+                "isDefault": false,
+                "defaultDiscount": 50
             }
         ]
     },
@@ -58,14 +86,18 @@ const data = [
                     {
                         "priceCategory": "single",
                         "quantity": "1",
-                        "price": "1200"
+                        "retailPrice": "1200",
+                        "wholesalePrice": "1100"
                     },
                     {
                         "priceCategory": "box",
                         "quantity": "5",
-                        "price": "5800"
+                        "retailPrice": "5800",
+                        "wholesalePrice": "4300"
                     }
-                ]
+                ],
+                "isDefault": true,
+                "defaultDiscount": 10
             },
             {
                 "stockName": "stock-new",
@@ -74,14 +106,18 @@ const data = [
                     {
                         "priceCategory": "single",
                         "quantity": "1",
-                        "price": "1250"
+                        "retailPrice": "1250",
+                        "wholesalePrice": "1200"
                     },
                     {
                         "priceCategory": "box",
                         "quantity": "5",
-                        "price": "6000"
+                        "retailPrice": "6200",
+                        "wholesalePrice": "6000"
                     }
-                ]
+                ],
+                "isDefault": false,
+                "defaultDiscount": 0
             }
         ]
     },
@@ -101,9 +137,12 @@ const data = [
                     {
                         "priceCategory": "single",
                         "quantity": "1",
-                        "price": "1050"
+                        "retailPrice": "1050",
+                        "wholesalePrice": "1000"
                     }
-                ]
+                ],
+                "isDefault": false,
+                "defaultDiscount": 40
             },
             {
                 "stockName": "stock-new",
@@ -112,9 +151,12 @@ const data = [
                     {
                         "priceCategory": "single",
                         "quantity": "1",
-                        "price": "1100"
+                        "retailPrice": "1000",
+                        "wholesalePrice": "950"
                     }
-                ]
+                ],
+                "isDefault": true,
+                "defaultDiscount": 0
             }
         ]
     },
@@ -134,14 +176,18 @@ const data = [
                     {
                         "priceCategory": "single",
                         "quantity": "1",
-                        "price": "150"
+                        "retailPrice": "150",
+                        "wholesalePrice": "100"
                     },
                     {
                         "priceCategory": "box",
                         "quantity": "10",
-                        "price": "1400"
+                        "retailPrice": "1400",
+                        "wholesalePrice": "1000"
                     }
-                ]
+                ],
+                "isDefault": false,
+                "defaultDiscount": 0
             },
             {
                 "stockName": "stock-new",
@@ -150,14 +196,18 @@ const data = [
                     {
                         "priceCategory": "single",
                         "quantity": "1",
-                        "price": "155"
+                        "retailPrice": "155",
+                        "wholesalePrice": "150"
                     },
                     {
                         "priceCategory": "box",
                         "quantity": "5",
-                        "price": "750"
+                        "retailPrice": "750",
+                        "wholesalePrice": "700"
                     }
-                ]
+                ],
+                "isDefault": true,
+                "defaultDiscount": 0
             }
         ]
     }

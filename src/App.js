@@ -13,7 +13,7 @@ const Login = React.lazy(() => import('./components/onboarding/Login'));
 const Dashboard = React.lazy(() => import('./components/dashboard/Dashboard'));
 const PartyLayout = React.lazy(() => import('./components/parties/PartyLayout'));
 const ItemLayout = React.lazy(() => import('./components/items/ItemLayout'));
-const Sales = React.lazy(() => import('./components/sales/Sales'));
+const SaleLayout = React.lazy(() => import('./components/sales/SaleLayout'));
 
 function App() {
   return (
@@ -33,7 +33,7 @@ function App() {
                   <Route path="/dashboard" exact element={<Dashboard />} />
                   <Route path="/parties" exact element={<PartyLayout />} />
                   <Route path="/items" exact element={<ItemLayout />} />
-                  <Route path="/sales" exact element={<Sales />} />
+                  <Route path="/sales" exact element={<SaleLayout />} />
                 </Route>
               </Route>
 

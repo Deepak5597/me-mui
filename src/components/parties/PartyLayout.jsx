@@ -62,7 +62,7 @@ function PartyLayout() {
     return (
         <Box sx={{ position: "relative" }}>
             <Grid container m="auto" sx={{ position: 'relative' }} >
-                <Grid item container direction="column" xs={3} sx={{ height: "89vh", boxShadow: 3, backgroundColor: "primary.contrastText" }}>
+                <Grid item container direction="column" xs={3} sx={{ height: "87vh", boxShadow: 3, backgroundColor: "primary.contrastText" }}>
                     <Grid item sx={{ width: "100%" }}>
                         <Box sx={{ p: 2, width: "100%", m: "auto" }}>
                             <Button variant="contained" startIcon={<AddIcon />} sx={{ width: "100%", mb: 2 }} onClick={handleOpen}>Add Party</Button>
