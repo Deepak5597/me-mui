@@ -1,9 +1,120 @@
+import { useReducer } from 'react';
+
+import { Button, Chip, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import DoneIcon from '@mui/icons-material/Done';
+
+import createPartyReducer from '../../reducers/createPartyReducer';
+import useConfig from '../../hooks/useConfig';
+
+const initialValue = {
+    isLoading: false,
+    name: "",
+    currentBalance: 0,
+    partyType: "credit",
+    billingLocation: [
+        {
+            billingName: "default",
+            billingAddress: "default",
+            billingContactNumber: "",
+            billingType: "retail",
+            isDefault: true
+        }
+    ]
+}
 
 function CreateParty() {
-    return <Box sx={{ backgroundColor: "primary.contrastText", minHeight: "50vh" }}>
-        Create Party Form
-    </Box>;
+    const { partyType, billingType } = useConfig();
+    const [partyForm, partyFormDispatcher] = useReducer(createPartyReducer, initialValue);
+
+    const handlePartyFieldChange = (e) => partyFormDispatcher({ key: "PARTY_FIELD_CHANGED", value: { field: e.target.name, newValue: e.target.value } });
+
+    const handleLocationDataChange = (index, e) => {
+        partyFormDispatcher({ key: "PARTY_LOCATION_CHANGED", value: { field: e.target.name, newValue: e.target.value, locationIndex: index } })
+    }
+    const handleAddMoreLocation = () => partyFormDispatcher({ key: "PARTY_LOCATION_ADD" });
+    const handleFinish = () => partyFormDispatcher({ key: "PARTY_FINISH" });
+
+
+    return (
+        <Box sx={{ backgroundColor: "primary.contrastText", minHeight: "50vh", p: 3, display: "flex", flexDirection: "column", rowGap: 1 }}>
+            <Box>
+                <Typography variant="h6">Add New Party</Typography>
+            </Box>
+            <Box sx={{ mb: 1, display: "flex", justifyContent: "flex-start", gap: 2, }}>
+                <FormControl sx={{ minWidth: "40%", flex: 1 }}>
+                    <TextField id="outlined-required" label="Party Name" name="name" value={partyForm?.name} onChange={handlePartyFieldChange} />
+                </FormControl>
+                <FormControl sx={{ minWidth: "25%" }}>
+                    <InputLabel id="item-select-helper-label">Party Type</InputLabel>
+                    <Select
+                        labelId="item-select-helper-label"
+                        id="item-select-helper"
+                        label="Party Type"
+                        onChange={handlePartyFieldChange}
+                        value={partyForm.partyType}
+                        name="partyType"
+                    >
+                        {
+                            partyType.map((type) => (
+                                <MenuItem key={type} value={type}>{type}</MenuItem>
+                            ))
+                        }
+                    </Select>
+                </FormControl>
+                <FormControl>
+                    <TextField id="outlined-required" type="number" name="currentBalance" label="Initial Balance" value={partyForm?.currentBalance} onChange={handlePartyFieldChange} />
+                </FormControl>
+            </Box>
+            <Box>
+                <Typography variant="h6">Locations</Typography>
+            </Box>
+            <Box sx={{ flex: 1, display: "flex", flexDirection: "column", rowGap: 1, maxHeight: "350px", overflowY: "auto" }}>
+                {
+                    partyForm?.billingLocation &&
+                    partyForm.billingLocation.map((location, index) => {
+                        return (
+                            <Box key={`bl_${index}`} sx={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start", gap: 2, border: 1, borderColor: "grey.300", p: 2 }}>
+                                <FormControl sx={{ minWidth: "30%" }}>
+                                    <TextField id="outlined-required" name="billingName" label="Name" value={location.billingName} onChange={(e) => handleLocationDataChange(index, e)} />
+                                </FormControl>
+                                <FormControl sx={{ minWidth: "40%" }}>
+                                    <TextField id="outlined-required" name="billingAddress" label="Location" value={location.billingAddress} onChange={(e) => handleLocationDataChange(index, e)} />
+                                </FormControl>
+                                <FormControl sx={{}}>
+                                    <TextField id="outlined-required" name="billingContactNumber" label="Contact" value={location.billingContactNumber} onChange={(e) => handleLocationDataChange(index, e)} />
+                                </FormControl>
+                                <FormControl sx={{ minWidth: "20%" }}>
+                                    <InputLabel id="item-select-helper-label">Type</InputLabel>
+                                    <Select
+                                        labelId="item-select-helper-label"
+                                        id="item-select-helper"
+                                        label="Type"
+                                        onChange={(e) => handleLocationDataChange(index, e)}
+                                        value={location.billingType}
+                                        name="billingType"
+                                    >
+                                        {
+                                            billingType.map((type) => (
+                                                <MenuItem key={`bl_bt_${index}_${type}`} value={type}>{type}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                                {
+                                    !Boolean(location.isDefault) ? <Button variant="outlined" bgcolor="primary.main" name="isDefault" onClick={(e) => handleLocationDataChange(index, e)}>Mark As Default</Button> : <Chip sx={{ alignSelf: "center" }} icon={<DoneIcon />} label="Default Location" color="success" />
+                                }
+                            </Box>
+                        )
+                    })
+                }
+            </Box>
+            <Box>
+                <Button variant="contained" sx={{ mr: 2, bgcolor: "secondary.main", color: "secondary.contrastText" }} onClick={handleAddMoreLocation}> Add More Location</Button>
+                <Button variant="contained" onClick={handleFinish}> Finish</Button>
+            </Box>
+        </Box>
+    )
 }
 
 export default CreateParty;

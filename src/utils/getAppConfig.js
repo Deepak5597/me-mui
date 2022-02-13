@@ -3,7 +3,9 @@ const defaultAppConfig = {
     appDefaultRoute: "/dashboard",
     defaultUser: "Guest User",
     defaultRole: "guest",
-    userDb: "users"
+    userDb: "users",
+    partyType: ["sale", "credit"],
+    billingType: ["retail", "wholesale"]
 };
 
 export default defaultAppConfig;
