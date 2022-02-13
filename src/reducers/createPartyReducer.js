@@ -14,7 +14,6 @@ const createPartyReducer = (state, action) => {
             }
         case "PARTY_LOCATION_CHANGED":
             const plcAtionData = action.value;
-            const currentValue = Boolean(plcAtionData.newValue);
             const newBillingLocation = state.billingLocation.map((location, index) => {
                 if (plcAtionData.locationIndex === index) {
                     return { ...location, [plcAtionData.field]: true }
