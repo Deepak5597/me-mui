@@ -10,11 +10,9 @@ function PartyDataTable({ data }) {
     let [rows, setRows] = useState([]);
 
     const viewTransaction = useCallback((id) => {
-        console.log(id)
     }, [])
 
     const editTransaction = useCallback((id) => {
-        console.log(id)
     }, [])
 
     const columns = useMemo(() => [
