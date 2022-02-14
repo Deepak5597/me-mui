@@ -86,7 +86,8 @@ function ItemForm({ itemData, saleDispatcher, billingType }) {
         {
             field: 'price',
             headerName: 'Price',
-            type: "number"
+            type: "number",
+            width: 70
         },
         {
             field: 'tax',
@@ -176,9 +177,10 @@ function ItemForm({ itemData, saleDispatcher, billingType }) {
     return (
         <Box sx={{ height: "100%", width: "100%", display: "flex", flexDirection: "column" }}>
             <Box sx={{ mb: 1 }}>
-                <FormControl sx={{ m: 1, mr: 3, minWidth: "25%" }}>
+                <FormControl sx={{ my: 1, mr: 3, minWidth: "25%" }}>
                     <InputLabel id="item-select-helper-label">Item</InputLabel>
                     <Select
+                        size="small"
                         labelId="item-select-helper-label"
                         id="item-select-helper"
                         label="Item"

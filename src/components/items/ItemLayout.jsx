@@ -55,7 +55,7 @@ function ItemLayout() {
                     <Grid item sx={{ width: "100%" }}>
                         <Box sx={{ p: 2, width: "100%", m: "auto" }}>
                             <Button variant="contained" startIcon={<AddIcon />} sx={{ width: "100%", mb: 2 }} onClick={handleOpen}>Add Item</Button>
-                            <TextField name="search-field" label="Search Items" variant="outlined" sx={{ width: "100%" }} ref={searchBarRef} onChange={filterItems} />
+                            <TextField size="small" name="search-field" label="Search Items" variant="outlined" sx={{ width: "100%" }} ref={searchBarRef} onChange={filterItems} />
                         </Box>
                         <Divider />
                     </Grid>

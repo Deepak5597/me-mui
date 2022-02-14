@@ -19,9 +19,9 @@ const createPartyReducer = (state, action) => {
             return { ...state, showMessage: false, [actionData.field]: actionData.newValue };
         case "PARTY_LOCATION_ADD":
             if (state.billingLocation.length > 0) {
-                return { ...state, billingLocation: [...state.billingLocation, { billingName: "default", billingAddress: "default", billingContactNumber: "", billingType: "retail", isDefault: false }] };
+                return { ...state, showMessage: false, billingLocation: [...state.billingLocation, { billingName: "default", billingAddress: "default", billingContactNumber: "", billingType: "retail", isDefault: false }] };
             } else {
-                return { ...state, billingLocation: [...state.billingLocation, { billingName: "default", billingAddress: "default", billingContactNumber: "", billingType: "retail", isDefault: true }] };
+                return { ...state, showMessage: false, billingLocation: [...state.billingLocation, { billingName: "default", billingAddress: "default", billingContactNumber: "", billingType: "retail", isDefault: true }] };
             }
         case "PARTY_LOCATION_CHANGED":
             const plcAtionData = action.value;
@@ -47,6 +47,9 @@ const createPartyReducer = (state, action) => {
             if (state.name === undefined || state.name === "") {
                 return { ...state, isLoading: false, showMessage: true, message: "Party Name is Mandatory", isSuccess: false };
             }
+            if (state.billingLocation.length === 0) {
+                return { ...state, isLoading: false, showMessage: true, message: "No Billing Location Added", isSuccess: false };
+            }
             const invalidBl = state.billingLocation.filter(bl => ((bl.billingName === "undefined" || bl.billingName === "") || (bl.billingContactNumber === "undefined" || bl.billingContactNumber === "")));
             if (invalidBl.length) {
                 return { ...state, isLoading: false, showMessage: true, message: "Some of the Location is missing, either Name or Contact Number", isSuccess: false };
@@ -54,6 +57,17 @@ const createPartyReducer = (state, action) => {
             const partyToAdd = preparePartyData(state);
             console.log(partyToAdd)
             return { ...state, isLoading: false, showMessage: true, message: "Party Add Successfully", isSuccess: true }
+        case "DELETE_LOCATION":
+            const ldAtionData = action.value;
+            const newLdBillingLocation = state.billingLocation;
+            const deletedElementStatus = newLdBillingLocation[ldAtionData.locationIndex].isDefault;
+            newLdBillingLocation.splice(ldAtionData.locationIndex, 1);
+            if (Boolean(deletedElementStatus)) {
+                if (newLdBillingLocation.length > 0) {
+                    newLdBillingLocation[0].isDefault = true;
+                }
+            }
+            return { ...state, billingLocation: newLdBillingLocation, showMessage: false };
         default:
             return state;
     }
