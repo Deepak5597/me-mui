@@ -62,7 +62,7 @@ function ItemDetails({ data }) {
                             </CardContent>
                         </Card>
                     </Grid>
-                    <Grid xs={0.1} />
+                    <Grid item xs={0.1} />
                     <Grid item xs={8.9} columnGap={1} sx={{ height: "100%", overflowY: "auto" }} >
                         {
                             data.stock.map((individualStock, index) => {

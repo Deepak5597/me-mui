@@ -42,7 +42,7 @@ export default function PersistentDrawerLeft() {
                 <SidebarHeader handleDrawerClose={handleDrawerClose} drawerHeader={DrawerHeader}></SidebarHeader>
                 <Sidebar />
             </Drawer>
-            <Main open={open} sx={{ backgroundColor: "lightgray" }}>
+            <Main open={open}>
                 <DrawerHeader />
                 <Outlet></Outlet>
             </Main>
