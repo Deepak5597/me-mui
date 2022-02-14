@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 
-import { Button, Chip, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Alert, Button, Chip, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import DoneIcon from '@mui/icons-material/Done';
 
@@ -10,6 +10,9 @@ import useConfig from '../../hooks/useConfig';
 const initialValue = {
     isLoading: false,
     name: "",
+    showMessage: false,
+    message: "",
+    isSuccess: true,
     currentBalance: 0,
     partyType: "credit",
     billingLocation: [
@@ -33,11 +36,21 @@ function CreateParty() {
         partyFormDispatcher({ key: "PARTY_LOCATION_CHANGED", value: { field: e.target.name, newValue: e.target.value, locationIndex: index } })
     }
     const handleAddMoreLocation = () => partyFormDispatcher({ key: "PARTY_LOCATION_ADD" });
-    const handleFinish = () => partyFormDispatcher({ key: "PARTY_FINISH" });
+    const handleDefaultLocationChange = (index, e) => partyFormDispatcher({ key: "PARTY_DEFAULT_LOCATION_CHANGED", value: { field: e.target.name, newValue: e.target.value, locationIndex: index } });
+    const handleFinish = () => {
+        partyFormDispatcher({ key: "LOADING" })
+        partyFormDispatcher({ key: "PARTY_FINISH" });
+    }
 
 
     return (
         <Box sx={{ backgroundColor: "primary.contrastText", minHeight: "50vh", p: 3, display: "flex", flexDirection: "column", rowGap: 1 }}>
+
+            {partyForm.showMessage &&
+                <Box>
+                    <Alert severity={partyForm.isSuccess ? "success" : "error"}>{partyForm.message}</Alert>
+                </Box>
+            }
             <Box>
                 <Typography variant="h6">Add New Party</Typography>
             </Box>
@@ -78,11 +91,11 @@ function CreateParty() {
                                 <FormControl sx={{ minWidth: "30%" }}>
                                     <TextField id="outlined-required" name="billingName" label="Name" value={location.billingName} onChange={(e) => handleLocationDataChange(index, e)} />
                                 </FormControl>
-                                <FormControl sx={{ minWidth: "40%" }}>
+                                <FormControl sx={{ minWidth: "40%", flex: 1 }}>
                                     <TextField id="outlined-required" name="billingAddress" label="Location" value={location.billingAddress} onChange={(e) => handleLocationDataChange(index, e)} />
                                 </FormControl>
-                                <FormControl sx={{}}>
-                                    <TextField id="outlined-required" name="billingContactNumber" label="Contact" value={location.billingContactNumber} onChange={(e) => handleLocationDataChange(index, e)} />
+                                <FormControl sx={{ minWidth: "30%" }}>
+                                    <TextField id="outlined-required" type="number" name="billingContactNumber" label="Contact" value={location.billingContactNumber} onChange={(e) => handleLocationDataChange(index, e)} />
                                 </FormControl>
                                 <FormControl sx={{ minWidth: "20%" }}>
                                     <InputLabel id="item-select-helper-label">Type</InputLabel>
@@ -102,7 +115,7 @@ function CreateParty() {
                                     </Select>
                                 </FormControl>
                                 {
-                                    !Boolean(location.isDefault) ? <Button variant="outlined" bgcolor="primary.main" name="isDefault" onClick={(e) => handleLocationDataChange(index, e)}>Mark As Default</Button> : <Chip sx={{ alignSelf: "center" }} icon={<DoneIcon />} label="Default Location" color="success" />
+                                    !Boolean(location.isDefault) ? <Button variant="outlined" bgcolor="primary.main" name="isDefault" onClick={(e) => handleDefaultLocationChange(index, e)}>Mark As Default</Button> : <Chip sx={{ alignSelf: "center" }} icon={<DoneIcon />} label="Default Location" color="success" />
                                 }
                             </Box>
                         )
@@ -111,7 +124,7 @@ function CreateParty() {
             </Box>
             <Box>
                 <Button variant="contained" sx={{ mr: 2, bgcolor: "secondary.main", color: "secondary.contrastText" }} onClick={handleAddMoreLocation}> Add More Location</Button>
-                <Button variant="contained" onClick={handleFinish}> Finish</Button>
+                <Button variant="contained" onClick={handleFinish} disabled={partyForm.isLoading}> {partyForm.isLoading ? "Saving ..." : "Save"} </Button>
             </Box>
         </Box>
     )
