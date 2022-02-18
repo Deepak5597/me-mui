@@ -2,7 +2,7 @@ const saleItemReducer = (state, action) => {
 
     const getValidStocks = (stocks) => {
         if (stocks === undefined) return [];
-        return stocks.filter(stock => Number(stock.quantity) > 0);
+        return stocks.filter(stock => Number(stock.defaultQuantity) > 0);
     }
     const getDefaultStocks = (stocks) => {
         if (stocks === undefined) return "none";
@@ -11,7 +11,7 @@ const saleItemReducer = (state, action) => {
     }
     const getValidPriceCategory = (stock) => {
         if (stock === undefined || stock === "none") return "none";
-        return stock.price.filter((pc) => Number(stock.quantity) >= Number(pc.quantity));
+        return stock.price.filter((pc) => Number(stock.defaultQuantity) >= Number(pc.quantity));
     }
     const getDefaultPrice = (priceCategory, billingType) => {
         if (priceCategory === undefined) return 0;

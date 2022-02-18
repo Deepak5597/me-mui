@@ -1,31 +1,29 @@
 import { useRef, useState, useEffect } from "react";
-import { Button, Divider, Grid, Modal, TextField } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+import { Button, Divider, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import AddIcon from '@mui/icons-material/Add';
 
 import PartyListItem from './PartyListItem';
-import partyData from './partyData';
 import PartyDetails from "./PartyDetails";
-import CreateParty from "./CreateParty";
 import PartyTransactions from "./PartyTransactions";
+import useGlobal from '../../hooks/useGlobal';
 
 function PartyLayout() {
-
     const [selectedParty, setSelectedParty] = useState(null);
-    const [filteredParties, setFilteredParties] = useState(partyData);
-    const [open, setOpen] = useState(false);
+    const [filteredParties, setFilteredParties] = useState([]);
     const searchBarRef = useRef();
+    const { parties } = useGlobal();
 
-    // Add Party Dialog State and functions starts
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         //if party exist than select first one by default
-        if (partyData.length) {
-            setSelectedParty(partyData[0]);
+        if (parties.length) {
+            setSelectedParty(parties[0]);
+            setFilteredParties(parties);
         }
-    }, [])
+    }, [parties])
 
     //Change Selected Party
     const changeSelectedParty = (party) => {
@@ -38,11 +36,11 @@ function PartyLayout() {
         const dataToReturn = [];
         const uniqueMap = [];
         if (searchText === "" || searchText === undefined) {
-            setFilteredParties(partyData);
+            setFilteredParties(parties);
             return;
         }
 
-        partyData.forEach((individualParty) => {
+        parties.forEach((individualParty) => {
             if (individualParty.name.toLowerCase().includes(searchText.toLowerCase()) && uniqueMap.indexOf(individualParty.name) === -1) {
                 dataToReturn.push(individualParty);
                 uniqueMap.push(individualParty.name);
@@ -59,13 +57,16 @@ function PartyLayout() {
         setFilteredParties(dataToReturn);
     }
 
+    const handleAddParty = () => {
+        navigate("/parties/create", { state: { from: "/parties" } });
+    }
     return (
         <Box sx={{ position: "relative" }}>
             <Grid container m="auto" sx={{ position: 'relative' }} >
                 <Grid item container direction="column" xs={3} sx={{ height: "87vh", boxShadow: 3, backgroundColor: "primary.contrastText" }}>
                     <Grid item sx={{ width: "100%" }}>
                         <Box sx={{ p: 2, width: "100%", m: "auto" }}>
-                            <Button variant="contained" startIcon={<AddIcon />} sx={{ width: "100%", mb: 2 }} onClick={handleOpen}>Add Party</Button>
+                            <Button variant="contained" startIcon={<AddIcon />} sx={{ width: "100%", mb: 2 }} onClick={handleAddParty}>Add Party</Button>
                             <TextField size="small" name="search-field" label="Search Parties" variant="outlined" sx={{ width: "100%" }} ref={searchBarRef} onChange={filterParties} />
                         </Box>
                         <Divider />
@@ -89,17 +90,6 @@ function PartyLayout() {
                     </Grid>
                 </Grid>
             </Grid>
-
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: "60%", boxShadow: 24, p: 4, zIndex: 10 }}>
-                    <CreateParty />
-                </Box>
-            </Modal>
         </Box>
     );
 }

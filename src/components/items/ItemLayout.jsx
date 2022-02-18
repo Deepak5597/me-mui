@@ -3,16 +3,18 @@ import { Button, Divider, Grid, Modal, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import AddIcon from '@mui/icons-material/Add';
 
-import itemData from './itemData';
 import ItemListItem from './ItemListItem';
 import ItemDetails from "./ItemDetails";
+import CreateItem from "../items/CreateItem";
+import useGlobal from "../../hooks/useGlobal";
 
 function ItemLayout() {
 
     const [selectedItem, setSelectedItem] = useState(null);
-    const [filteredItems, setFilteredItems] = useState(itemData);
+    const [filteredItems, setFilteredItems] = useState([]);
     const [open, setOpen] = useState(false);
     const searchBarRef = useRef();
+    const { items } = useGlobal();
 
     // Add Party Dialog State and functions starts
     const handleOpen = () => setOpen(true);
@@ -20,10 +22,11 @@ function ItemLayout() {
 
     useEffect(() => {
         //if item exist than select first one by default
-        if (itemData.length) {
-            setSelectedItem(itemData[0]);
+        if (items.length) {
+            setSelectedItem(items[0]);
+            setFilteredItems(items);
         }
-    }, [])
+    }, [items])
 
     //Change Selected Item
     const changeSelectedItem = (item) => {
@@ -36,10 +39,10 @@ function ItemLayout() {
         const dataToReturn = [];
         const uniqueMap = [];
         if (searchText === "" || searchText === undefined) {
-            setFilteredItems(itemData);
+            setFilteredItems(items);
             return;
         }
-        itemData.forEach((individualItem) => {
+        items.forEach((individualItem) => {
             if ((individualItem.shortName.toLowerCase().includes(searchText.toLowerCase()) || individualItem.longName.toLowerCase().includes(searchText.toLowerCase()) || individualItem.company.toLowerCase().includes(searchText.toLowerCase()) || individualItem.description.toLowerCase().includes(searchText.toLowerCase()) || individualItem.category.toLowerCase().includes(searchText.toLowerCase())) && uniqueMap.indexOf(individualItem.id) === -1) {
                 dataToReturn.push(individualItem);
                 uniqueMap.push(individualItem.id);
@@ -79,8 +82,8 @@ function ItemLayout() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: "60%", boxShadow: 24, p: 4, zIndex: 10 }}>
-
+                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: "80%", boxShadow: 24, p: 4, zIndex: 10 }}>
+                    <CreateItem />
                 </Box>
             </Modal>
         </Box>

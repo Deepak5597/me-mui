@@ -1,7 +1,8 @@
 import { useReducer } from 'react';
+import { Link } from 'react-router-dom';
 
-import { Alert, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Alert, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -26,8 +27,7 @@ const initialValue = {
         }
     ]
 }
-
-function CreateParty() {
+function CreateParty1() {
     const { partyType, billingType } = useConfig();
     const [partyForm, partyFormDispatcher] = useReducer(createPartyReducer, initialValue);
 
@@ -45,95 +45,111 @@ function CreateParty() {
     const handleLocationDelete = (index) => {
         partyFormDispatcher({ key: "DELETE_LOCATION", value: { locationIndex: index } })
     }
-
-
     return (
-        <Box sx={{ backgroundColor: "primary.contrastText", minHeight: "40vh", p: 3, display: "flex", flexDirection: "column", rowGap: 1, '& .MuiTextField-root': { p: 0, m: 0 } }}>
-
+        <Grid container rowGap={2}>
+            <Grid item xs={12}>
+                <Typography variant="h6"> Create New Party </Typography>
+                <Link to="/parties"><Button variant="contained" color="primary" sx={{ textDecoration: "none" }}> Go Back</Button></Link>
+            </Grid>
             {partyForm.showMessage &&
-                <Box>
+                <Grid item xs={12}>
                     <Alert severity={partyForm.isSuccess ? "success" : "error"}>{partyForm.message}</Alert>
-                </Box>
+                </Grid>
             }
-            <Box sx={{ mb: 1 }}>
-                <Typography variant="h6">Add New Party</Typography>
-            </Box>
-            <Box sx={{ mb: 1, display: "flex", justifyContent: "flex-start", gap: 2, }}>
-                <FormControl sx={{ minWidth: "40%", flex: 1 }}>
-                    <TextField size="small" id="outlined-required" label="Party Name" name="name" value={partyForm?.name} onChange={handlePartyFieldChange} />
-                </FormControl>
-                <FormControl sx={{ minWidth: "25%" }}>
-                    <InputLabel id="item-select-helper-label">Party Type</InputLabel>
-                    <Select
-                        size="small"
-                        labelId="item-select-helper-label"
-                        id="item-select-helper"
-                        label="Party Type"
-                        onChange={handlePartyFieldChange}
-                        value={partyForm.partyType}
-                        name="partyType"
-                    >
-                        {
-                            partyType.map((type) => (
-                                <MenuItem key={type} value={type}>{type}</MenuItem>
-                            ))
-                        }
-                    </Select>
-                </FormControl>
-                <FormControl>
-                    <TextField size="small" id="outlined-required" type="number" name="currentBalance" label="Initial Balance" value={partyForm?.currentBalance} onChange={handlePartyFieldChange} />
-                </FormControl>
-            </Box>
-            <Box>
-                <Typography variant="h6">Locations</Typography>
-            </Box>
-            <Box sx={{ flex: 1, display: "flex", flexDirection: "column", rowGap: 1, maxHeight: "270px", overflowY: "auto" }}>
-                {
-                    partyForm?.billingLocation &&
-                    partyForm.billingLocation.map((location, index) => {
-                        return (
-                            <Box key={`bl_${index}`} sx={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start", gap: 2, border: 1, borderColor: "grey.300", p: 2, position: "relative", zIndex: 1 }}>
-                                <FormControl sx={{ minWidth: "30%" }}>
-                                    <TextField size="small" id="outlined-required" name="billingName" label="Name" value={location.billingName} onChange={(e) => handleLocationDataChange(index, e)} />
-                                </FormControl>
-                                <FormControl sx={{ minWidth: "40%", flex: 1 }}>
-                                    <TextField size="small" id="outlined-required" name="billingAddress" label="Location" value={location.billingAddress} onChange={(e) => handleLocationDataChange(index, e)} />
-                                </FormControl>
-                                <FormControl sx={{ minWidth: "30%" }}>
-                                    <TextField size="small" id="outlined-required" type="number" name="billingContactNumber" label="Contact" value={location.billingContactNumber} onChange={(e) => handleLocationDataChange(index, e)} />
-                                </FormControl>
-                                <FormControl sx={{ minWidth: "20%" }}>
-                                    <InputLabel id="item-select-helper-label">Type</InputLabel>
-                                    <Select
-                                        size="small"
-                                        labelId="item-select-helper-label"
-                                        id="item-select-helper"
-                                        label="Type"
-                                        onChange={(e) => handleLocationDataChange(index, e)}
-                                        value={location.billingType}
-                                        name="billingType">
+            <Grid item container xs={12} >
+                <Box component="form" autoComplete="off" noValidate sx={{ width: "100%" }}>
+                    <Grid container item rowGap={2} columnGap={1}>
+                        <Grid item xs={12} sm>
+                            <FormControl fullWidth >
+                                <TextField size="small" label="Party Name" variant="outlined" name="name" value={partyForm?.name} onChange={handlePartyFieldChange} />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs sm={3}>
+                            <FormControl fullWidth >
+                                <InputLabel id="party-select-helper-label">Party Type</InputLabel>
+                                <Select
+                                    size="small"
+                                    labelId="party-select-helper-label"
+                                    id="party-select-helper"
+                                    label="Party Type"
+                                    onChange={handlePartyFieldChange}
+                                    value={partyForm.partyType}
+                                    name="partyType"
+                                >
+                                    {
+                                        partyType.map((type) => (
+                                            <MenuItem key={type} value={type}>{type}</MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs sm={3}>
+                            <FormControl fullWidth >
+                                <TextField size="small" type="number" label="Current Balance" variant="outlined" name="currentBalance" value={partyForm?.currentBalance} onChange={handlePartyFieldChange} />
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} my={2}>
+                        <Typography variant="h6"> Billing Locations </Typography>
+                    </Grid>
+                    {
+                        partyForm?.billingLocation &&
+                        partyForm.billingLocation.map((location, index) => {
+                            return (
+                                <Grid container item gap={2} sx={{ border: 1, borderColor: "grey.300", borderStyle: "dotted", p: 2, mt: 2 }} key={`bl_${index}`}>
+                                    <Grid item xs={12} sm>
+                                        <FormControl fullWidth >
+                                            <TextField size="small" label="Name" variant="outlined" name="billingName" value={location.billingName} onChange={(e) => handleLocationDataChange(index, e)} />
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sm>
+                                        <FormControl fullWidth >
+                                            <TextField size="small" label="Contact" variant="outlined" name="billingContactNumber" value={location.billingContactNumber} onChange={(e) => handleLocationDataChange(index, e)} />
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sm>
+                                        <FormControl fullWidth >
+                                            <InputLabel id="type-select-helper-label">Type</InputLabel>
+                                            <Select
+                                                size="small"
+                                                labelId="type-select-helper-label"
+                                                id="type-select-helper"
+                                                label="Type"
+                                                onChange={(e) => handleLocationDataChange(index, e)}
+                                                value={location.billingType}
+                                                name="billingType">
+                                                {
+                                                    billingType.map((type) => (
+                                                        <MenuItem key={`bl_bt_${index}_${type}`} value={type}>{type}</MenuItem>
+                                                    ))
+                                                }
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sm={12}>
+                                        <FormControl fullWidth >
+                                            <TextField size="small" label="Location" variant="outlined" multiline rows={2} name="billingAddress" value={location.billingAddress} onChange={(e) => handleLocationDataChange(index, e)} />
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sm={12}>
                                         {
-                                            billingType.map((type) => (
-                                                <MenuItem key={`bl_bt_${index}_${type}`} value={type}>{type}</MenuItem>
-                                            ))
+                                            !Boolean(location.isDefault) ? <Button variant="outlined" color="primary" name="isDefault" onClick={(e) => handleDefaultLocationChange(index, e)}>Mark Default</Button > : <Button variant="contained" color="success" startIcon={<DoneIcon />}>Default</Button>
                                         }
-                                    </Select>
-                                </FormControl>
-                                {
-                                    !Boolean(location.isDefault) ? <Button variant="outlined" bgcolor="primary.main" name="isDefault" onClick={(e) => handleDefaultLocationChange(index, e)}>Mark As Default</Button > : <Button variant="contained" color="success" startIcon={<DoneIcon />}>Default Location</Button>
-                                }
-                                <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={(e) => handleLocationDelete(index)}>Delete</Button>
-                            </Box>
-                        )
-                    })
-                }
-            </Box>
-            <Box>
-                <Button variant="contained" sx={{ mr: 2, bgcolor: "secondary.main", color: "secondary.contrastText" }} onClick={handleAddMoreLocation}> Add More Location</Button>
-                <Button variant="contained" onClick={handleFinish} disabled={partyForm.isLoading}> {partyForm.isLoading ? "Saving ..." : "Save"} </Button>
-            </Box>
-        </Box>
+                                        <Button variant="outlined" color="error" startIcon={<DeleteIcon />} sx={{ ml: 2 }} onClick={(e) => handleLocationDelete(index)}>Delete</Button>
+                                    </Grid>
+                                </Grid>
+                            )
+                        })
+                    }
+                    <Grid container item gap={1} sx={{ my: 2 }}>
+                        <Button variant="contained" color="secondary" onClick={handleAddMoreLocation}> Add More Location</Button>
+                        <Button variant="contained" onClick={handleFinish} disabled={partyForm.isLoading}> {partyForm.isLoading ? "Saving ..." : "Save"} </Button>
+                    </Grid>
+                </Box>
+            </Grid >
+        </Grid >
     )
 }
 
-export default CreateParty;
+export default CreateParty1
