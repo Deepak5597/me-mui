@@ -3,10 +3,9 @@ import { Button, Divider, FormControl, InputLabel, MenuItem, Select, TextField, 
 import { Box } from "@mui/system";
 import { DeleteRounded } from '@mui/icons-material';
 
-import partyData from '../parties/partyData';
-import itemData from '../items/itemData';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import { useCallback } from 'react';
+import useGlobal from '../../hooks/useGlobal';
 
 function Sales() {
 
@@ -14,14 +13,14 @@ function Sales() {
     const [selectedParty, setSelectedParty] = useState("none");
     const [billingLocation, setBillingLocation] = useState([]);
     const [selectedBillingLocation, setSelectedBillingLocation] = useState('none');
-    const [itemListDropdown, setItemListDropdown] = useState([])
+    const [itemListDropdown, setItemListDropdown] = useState([]);
+    const { parties, items } = useGlobal();
 
     const handleEditRowsModelChange = (e) => {
-        console.log(e)
         const keys = Object.keys(e);
         if (keys.length) {
             const value = e[keys[0]].item.value;
-            const item = itemData.filter((item) => item.shortName === value);
+            const item = items.filter((item) => item.shortName === value);
             console.log(item)
             setRows((prevRows) => {
                 const data = [];
@@ -72,7 +71,7 @@ function Sales() {
 
     const partyChanged = (e) => {
         setSelectedParty(e.target.value);
-        const sp = partyData.filter((party) => party.id === e.target.value);
+        const sp = parties.filter((party) => party.id === e.target.value);
         setBillingLocation(sp[0].billingLocation);
         if (sp[0].billingLocation.length)
             setSelectedBillingLocation(sp[0].billingLocation[0].billingName);
@@ -84,9 +83,8 @@ function Sales() {
 
     useEffect(() => {
         const items = ["none"];
-        itemData.forEach(item => items.push(item.shortName));
+        items.forEach(item => items.push(item.shortName));
         setItemListDropdown(items);
-        console.log(items)
     }, [])
 
     const addBlankItem = () => {
@@ -110,7 +108,7 @@ function Sales() {
                             <em>None</em>
                         </MenuItem>
                         {
-                            partyData.map((party, index) => (
+                            parties.map((party, index) => (
                                 <MenuItem key={index} value={party.id}>{party.name}</MenuItem>
                             ))
                         }

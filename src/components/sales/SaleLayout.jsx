@@ -4,12 +4,11 @@ import { Divider, FormControl, InputLabel, MenuItem, Select, TextField, Typograp
 import { Box } from "@mui/system";
 
 import saleReducer from '../../reducers/saleReducer';
-import partyData from '../parties/partyData';
-import itemsData from '../items/itemData';
-import itemUnits from '../../utils/getItemUnits';
 import ItemForm from './ItemForm';
+import useGlobal from '../../hooks/useGlobal';
 
 function SaleLayout() {
+    const { parties, items, dynamicConfig: { units } } = useGlobal();
 
     const initialValue = {
         "partyDetails": {
@@ -19,13 +18,12 @@ function SaleLayout() {
             "items": [],
         },
         "isLoading": false,
-        "partyData": partyData,
-        "itemsData": itemsData,
-        "itemUnits": itemUnits,
+        "partyData": parties,
+        "itemsData": items,
+        "itemUnits": units,
         "billingLocationDropdownData": [],
         "billingType": "retail"
     }
-
     const [saleForm, saleDispatcher] = useReducer(saleReducer, initialValue);
 
     const handlePartyChanged = (e) => saleDispatcher({ key: "PARTY_CHANGED", value: e.target.value });
