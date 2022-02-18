@@ -47,11 +47,12 @@ function CreateParty1() {
     }
     return (
         <Grid container rowGap={2}>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Typography variant="h6"> Create New Party </Typography>
-                <Link to="/parties"><Button variant="contained" color="primary" sx={{ textDecoration: "none" }}> Go Back</Button></Link>
+                <Link to="/parties" style={{ textDecoration: "none" }}><Button variant="contained" color="primary"> Go Back</Button></Link>
             </Grid>
-            {partyForm.showMessage &&
+            {
+                partyForm.showMessage &&
                 <Grid item xs={12}>
                     <Alert severity={partyForm.isSuccess ? "success" : "error"}>{partyForm.message}</Alert>
                 </Grid>
